@@ -1,0 +1,17 @@
+# Classical CV Traffic Monitor — Python dependencies
+#
+# JETSON NOTE:
+#   JetPack ships with a CUDA-enabled OpenCV build.
+#   Do NOT install opencv-python via pip on the Jetson — it replaces
+#   the GPU build with a CPU-only wheel.
+#   Run: python3 -c "import cv2; print(cv2.getBuildInformation())" | grep -i cuda
+#   to verify CUDA support before installing anything.
+#
+# On a development machine (non-Jetson) install all three:
+#   pip install -r requirements.txt
+
+numpy>=1.24.0
+pyyaml>=6.0
+
+# Install opencv-python ONLY on non-Jetson machines:
+# opencv-python>=4.8.0

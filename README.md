@@ -222,6 +222,3 @@ implementation — but it is not part of the main demo flow.
 - **Motorcycle / bicycle geometry** is ambiguous (borderline aspect ratio and area).
 - Detections are **not scale-normalised**: a distant vehicle and a nearby
   pedestrian can have the same bounding-box area.
-
-These are expected and should be discussed in the academic presentation.
-# jetson-propuesta-deteccion-clasica-1

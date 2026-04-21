@@ -1,0 +1,52 @@
+# =============================================================
+# Classical CV Traffic Monitor — Default Configuration
+# =============================================================
+# Edit this file to tune the detector without touching source code.
+# All distances and areas are in pixels unless noted.
+
+# --- CSI camera (only used when --source csi) -----------------
+csi_width:  1280
+csi_height:  720
+csi_fps:      30
+csi_flip:      0    # 0=none  2=180°  (use 2 if image is upside-down)
+
+# --- Background subtractor (MOG2) -----------------------------
+# bg_history: how many past frames build the background model.
+#   Larger → slower adaptation → good for cameras that never move.
+#   Smaller → faster adaptation → survives lighting changes better.
+bg_history:        300
+
+# bg_var_threshold: Mahalanobis-distance² threshold per pixel.
+#   Lower  → more pixels flagged as foreground (more sensitive, more noise).
+#   Higher → only large colour changes trigger foreground (cleaner, may miss slow objects).
+bg_var_threshold:   50
+
+# --- Morphological filtering ----------------------------------
+# Kernel sizes (px) for the ellipse structuring element.
+#   open_ksize:  removes specks smaller than ~(open_ksize/2)² px.
+#   close_ksize: fills gaps smaller than ~(close_ksize/2)² px inside blobs.
+morph_open_ksize:    5
+morph_close_ksize:  15
+
+# --- Contour area filter --------------------------------------
+# Blobs outside [min, max] px² are discarded before classification.
+contour_min_area:    800
+contour_max_area:  80000
+
+# --- Geometric classifier ------------------------------------
+# Pedestrian: tall (aspect ratio h/w ≥ ped_aspect_min) AND small area.
+# Vehicle:    large area, not excessively tall.
+ped_min_area:     600
+ped_max_area:   12000
+veh_min_area:    4000
+ped_aspect_min:   1.2    # h/w ≥ 1.2 → taller than wide → likely pedestrian
+
+# --- Centroid tracker -----------------------------------------
+tracker_max_disappeared:  30   # frames before an unmatched track is deleted
+tracker_max_distance:     80   # max px to associate a detection with a track
+
+# --- FPS counter ----------------------------------------------
+fps_window: 30   # rolling average over this many frames
+
+# --- Precision/recall evaluation -----------------------------
+iou_threshold: 0.4   # overlap threshold to count a detection as a true positive

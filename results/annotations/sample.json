@@ -1,0 +1,31 @@
+{
+  "_comment": "Ground-truth annotation sample. Frame keys follow 'frame_XXXX' (4-digit zero-padded frame index). Boxes are [x, y, w, h] in pixels. Replace with your own annotations.",
+
+  "frame_0050": {
+    "pedestrians": [
+      [118, 195, 44, 112],
+      [298, 178, 41,  98]
+    ],
+    "vehicles": [
+      [445, 148, 185, 105]
+    ]
+  },
+
+  "frame_0100": {
+    "pedestrians": [
+      [128, 200, 44, 112]
+    ],
+    "vehicles": [
+      [455, 152, 190, 102],
+      [645, 158, 205, 115]
+    ]
+  },
+
+  "frame_0150": {
+    "pedestrians": [],
+    "vehicles": [
+      [200, 160, 175,  98],
+      [480, 155, 195, 108]
+    ]
+  }
+}
