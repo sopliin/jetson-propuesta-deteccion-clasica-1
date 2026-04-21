@@ -42,6 +42,7 @@ from metrics.fps           import FPSCounter
 from metrics.stats         import DetectionStats
 from metrics.evaluator     import load_annotations, evaluate, print_evaluation
 from utils.gpu_check       import check_gpu, print_device_status
+from utils.system_monitor  import format_status
 from visualization.overlay import draw_detections, draw_tracks, draw_hud
 
 
@@ -100,6 +101,9 @@ def parse_args() -> argparse.Namespace:
 
 _PRINT_INTERVAL_S = 2.0   # seconds between terminal status updates
 
+# FPS below this value triggers an alert line in the terminal
+_FPS_ALERT_THRESHOLD = 15.0
+
 
 def _print_status(
     frame_id: int,
@@ -112,16 +116,24 @@ def _print_status(
     dev_short: str,
     det_rate: float,
 ) -> None:
+    # --- Line 1: detection metrics ---
+    fps_flag = "  [!FPS]" if fps < _FPS_ALERT_THRESHOLD and fps > 0 else ""
     print(
         f"[{frame_id:06d}]  "
-        f"FPS={fps:5.1f}  "
+        f"FPS={fps:5.1f}{fps_flag}  "
         f"PED={n_ped:3d}  VEH={n_veh:3d}  "
-        f"time={frame_ms:5.1f} ms  "
-        f"res={resolution}  "
-        f"src={source}  "
-        f"dev={dev_short}  "
-        f"det={det_rate:5.1f}%"
+        f"time={frame_ms:5.1f}ms  "
+        f"det={det_rate:5.1f}%  "
+        f"res={resolution}  src={source}  dev={dev_short}"
     )
+
+    # --- Line 2: system resources ---
+    sys_line, alerts = format_status()
+    print(f"         {sys_line}")
+
+    # --- Alert lines (only when triggered) ---
+    for alert in alerts:
+        print(f"         {alert}")
 
 
 # ---------------------------------------------------------------------------

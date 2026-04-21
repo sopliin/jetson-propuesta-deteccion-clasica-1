@@ -14,32 +14,34 @@ csi_flip:      0    # 0=none  2=180°  (use 2 if image is upside-down)
 # bg_history: how many past frames build the background model.
 #   Larger → slower adaptation → good for cameras that never move.
 #   Smaller → faster adaptation → survives lighting changes better.
-bg_history:        300
+bg_history:        200   # reduced from 300: faster re-adaptation for outdoor light changes
 
 # bg_var_threshold: Mahalanobis-distance² threshold per pixel.
 #   Lower  → more pixels flagged as foreground (more sensitive, more noise).
 #   Higher → only large colour changes trigger foreground (cleaner, may miss slow objects).
-bg_var_threshold:   50
+bg_var_threshold:   40   # reduced from 50: more sensitive to slow-moving objects
 
 # --- Morphological filtering ----------------------------------
 # Kernel sizes (px) for the ellipse structuring element.
 #   open_ksize:  removes specks smaller than ~(open_ksize/2)² px.
 #   close_ksize: fills gaps smaller than ~(close_ksize/2)² px inside blobs.
 morph_open_ksize:    5
-morph_close_ksize:  15
+morph_close_ksize:  20   # increased from 15: better hole-filling for vehicle blobs
 
 # --- Contour area filter --------------------------------------
 # Blobs outside [min, max] px² are discarded before classification.
-contour_min_area:    800
-contour_max_area:  80000
+contour_min_area:    600   # reduced from 800: catch smaller/distant pedestrians
+contour_max_area:  90000   # increased from 80000: allow larger vehicle blobs
 
 # --- Geometric classifier ------------------------------------
 # Pedestrian: tall (aspect ratio h/w ≥ ped_aspect_min) AND small area.
 # Vehicle:    large area, not excessively tall.
-ped_min_area:     600
-ped_max_area:   12000
-veh_min_area:    4000
-ped_aspect_min:   1.2    # h/w ≥ 1.2 → taller than wide → likely pedestrian
+# NOTE: ped_max_area and veh_min_area intentionally overlap (4500–16000 px²);
+#       aspect ratio decides in that range, area is the final tie-breaker.
+ped_min_area:     500    # reduced from 600: catch small/distant pedestrians
+ped_max_area:   16000    # increased from 12000: allow larger nearby pedestrians
+veh_min_area:    4500    # increased from 4000: clearer separation from pedestrians
+ped_aspect_min:   1.1    # reduced from 1.2: elevated/angled cameras foreshorten height
 
 # --- Centroid tracker -----------------------------------------
 tracker_max_disappeared:  30   # frames before an unmatched track is deleted

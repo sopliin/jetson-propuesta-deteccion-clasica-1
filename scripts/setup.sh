@@ -38,9 +38,9 @@ source .venv/bin/activate
 # --- Upgrade pip silently
 pip install --upgrade pip -q
 
-# --- Install dependencies (numpy + pyyaml; OpenCV from system)
-echo "[INFO] Installing numpy and pyyaml..."
-pip install numpy pyyaml -q
+# --- Install dependencies (numpy + pyyaml + psutil; OpenCV from system)
+echo "[INFO] Installing numpy, pyyaml, and psutil..."
+pip install numpy pyyaml psutil -q
 
 # --- Verify OpenCV
 echo ""
